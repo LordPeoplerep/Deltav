@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Peoplerep Δv Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    function calculateDeltaV() {
+      const totalMass = parseFloat(document.getElementById("totalMass").value);
+      const fuelMass = parseFloat(document.getElementById("fuelMass").value);
+      const isp = parseFloat(document.getElementById("isp").value);
+
+      if (isNaN(totalMass) || isNaN(fuelMass) || isNaN(isp) || fuelMass <= 0 || fuelMass >= totalMass) {
+        document.getElementById("result").innerText = "Please enter valid inputs.";
+        return;
+      }
+
+      const dryMass = totalMass - fuelMass;
+      const g0 = 9.80665; // m/s^2
+      const deltaV = isp * g0 * Math.log(totalMass / dryMass);
+
+      const formattedDeltaV = deltaV.toLocaleString(undefined, { maximumFractionDigits: 2 });
+      document.getElementById("result").innerText = `Δv = ${formattedDeltaV} m/s`;
+    }
+  </script>
+</head>
+<body class="bg-gray-900 text-white font-sans min-h-screen flex items-center justify-center p-4">
+  <div class="bg-gray-800 rounded-2xl shadow-xl p-8 max-w-md w-full">
+    <h1 class="text-2xl font-bold mb-4 text-center">Δv Calculator - Peoplerep</h1>
+    <div class="space-y-4">
+      <div>
+        <label class="block mb-1" for="totalMass">Total Mass (kg)</label>
+        <input id="totalMass" type="number" class="w-full px-3 py-2 rounded bg-gray-700 text-white" />
+      </div>
+      <div>
+        <label class="block mb-1" for="fuelMass">Fuel Mass (kg)</label>
+        <input id="fuelMass" type="number" class="w-full px-3 py-2 rounded bg-gray-700 text-white" />
+      </div>
+      <div>
+        <label class="block mb-1" for="isp">Specific Impulse (Isp in seconds)</label>
+        <input id="isp" type="number" class="w-full px-3 py-2 rounded bg-gray-700 text-white" />
+      </div>
+      <button onclick="calculateDeltaV()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold">
+        Calculate Δv
+      </button>
+      <div id="result" class="text-center mt-4 text-lg font-bold"></div>
+    </div>
+  </div>
+</body>
+</html>
